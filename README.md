@@ -11,6 +11,7 @@ To run (from root directory
 >npm install
 
 >truffle compile
+
 >truffle migrate
 
 >npm run dev
