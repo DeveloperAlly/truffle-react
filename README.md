@@ -15,3 +15,8 @@ To run (from root directory
 >truffle migrate
 
 >npm run dev
+
+
+The contract config needs fixing though.
+
+Check out my truffle-campaign github for a working deployed to rinkeby project with react
