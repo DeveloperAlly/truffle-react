@@ -17,6 +17,6 @@ To run (from root directory
 >npm run dev
 
 
-The contract config needs fixing though.
+The contract config needs fixing though I think.
 
 Check out my truffle-campaign github for a working deployed to rinkeby project with react
