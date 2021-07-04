@@ -1,13 +1,26 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import SimpleStorageContract from "../build/contracts/SimpleStorage.json";
 import getWeb3 from "./getWeb3";
 
 // import "./App.css";
 
-class App extends Component {
-  state = { storageValue: 0, web3: null, accounts: null, contract: null };
+const App = () => {
+  const [data, setData] = useState({
+    storageValue: 0,
+    web3: null,
+    accounts: null,
+    contract: null,
+  });
 
-  componentDidMount = async () => {
+  useEffect(() => {
+    init();
+  }, []);
+
+  useEffect(() => {
+    if (data.contract) runExample();
+  }, [data]);
+
+  const init = async () => {
     try {
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
@@ -23,9 +36,9 @@ class App extends Component {
         deployedNetwork && deployedNetwork.address
       );
 
-      // Set web3, accounts, and contract to the state, and then proceed with an
+      // Set web3, accounts, and contract to the data, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance }, this.runExample);
+      setData({ web3, accounts, contract: instance });
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -35,8 +48,8 @@ class App extends Component {
     }
   };
 
-  runExample = async () => {
-    const { accounts, contract } = this.state;
+  const runExample = async () => {
+    const { accounts, contract } = data;
 
     // Stores a given value, 5 by default.
     await contract.methods.set(5).send({ from: accounts[0] });
@@ -44,30 +57,27 @@ class App extends Component {
     // Get the value from the contract to prove it worked.
     const response = await contract.methods.get().call();
 
-    // Update state with the result.
-    this.setState({ storageValue: response });
+    // Update data with the result.
+    setData({ ...data, storageValue: response });
   };
 
-  render() {
-    if (!this.state.web3) {
-      return <div>Loading Web3, accounts, and contract...</div>;
-    }
-    return (
-      <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
-        <p>
-          Try changing the value stored on <strong>line 42</strong> of App.js.
-        </p>
-        <div>The stored value is: {this.state.storageValue}</div>
-      </div>
-    );
-  }
-}
+  return !data.web3 ? (
+    <div>Loading Web3, accounts, and contract...</div>
+  ) : (
+    <div className="App">
+      <h1>Good to Go!</h1>
+      <p>Your Truffle Box is installed and ready.</p>
+      <h2>Smart Contract Example</h2>
+      <p>
+        If your contracts compiled and migrated successfully, below will show a
+        stored value of 5 (by default).
+      </p>
+      <p>
+        Try changing the value stored on <strong>line 56</strong> of index.js.
+      </p>
+      <div>The stored value is: {data.storageValue}</div>
+    </div>
+  );
+};
 
 export default App;

@@ -2,10 +2,12 @@
   "name": "client",
   "version": "0.1.0",
   "main": "App.js",
-  "author": {
-    "name": "Alison Haire",
-    "url": "https://github.com/DeveloperAlly"
-  },
+  "contributors": [
+    {
+      "name": "Alison Haire",
+      "url": "https://github.com/DeveloperAlly"
+    }
+  ],
   "private": true,
   "dependencies": {
     "mocha": "^9.0.2",
